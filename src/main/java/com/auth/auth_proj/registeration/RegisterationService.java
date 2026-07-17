@@ -1,10 +1,12 @@
 package com.auth.auth_proj.registeration;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class RegisterationService {
 
 	public String register(RegisterationRequest registerationRequest) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'register'");
+		return "it worked";
 	}
     
 }
