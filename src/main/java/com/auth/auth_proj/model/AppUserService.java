@@ -1,11 +1,17 @@
 package com.auth.auth_proj.model;
 
-import org.springframework.boot.security.autoconfigure.SecurityProperties.User;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.auth.auth_proj.registeration.token.ConfirmationToken;
+import com.auth.auth_proj.registeration.token.ConfirmationTokenRepo;
 
 import lombok.AllArgsConstructor;
 
@@ -14,6 +20,9 @@ import lombok.AllArgsConstructor;
 public class AppUserService implements UserDetailsService {
 
     private final StudentRepo studentRepo;
+
+    @Autowired
+    private ConfirmationTokenRepo confirmationTokenRepo;
 
     private BCryptPasswordEncoder passwordEncoder;
     
@@ -36,6 +45,20 @@ public class AppUserService implements UserDetailsService {
         studentRepo.save(user);
 
         // TODO: conformation
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+            token,
+            LocalDateTime.now(),
+            LocalDateTime.now().plusMinutes(15),
+            user
+        );
+
+        confirmationTokenRepo.save(confirmationToken);
+
+
+
         return "it worked";
     }
 
