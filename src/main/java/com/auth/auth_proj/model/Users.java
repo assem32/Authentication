@@ -5,7 +5,6 @@ import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,9 +33,17 @@ public class Users implements UserDetails{
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
 
-    private Boolean locked;
+    private Boolean locked = false;
 
-    private Boolean enabled;
+    private Boolean enabled = false;
+
+    
+    public Users(String userName, String email, String password, AppUserRole appUserRole) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.appUserRole = appUserRole;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
