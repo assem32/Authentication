@@ -5,11 +5,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.auth.auth_proj.email.EmailSender;
 import com.auth.auth_proj.model.AppUserRole;
 import com.auth.auth_proj.model.AppUserService;
+import com.auth.auth_proj.model.LoginRequest;
 import com.auth.auth_proj.model.Users;
 import com.auth.auth_proj.registeration.token.ConfirmationToken;
 import com.auth.auth_proj.registeration.token.ConfirmationTokenService;
@@ -30,6 +35,9 @@ public class RegisterationService {
 
 	@Autowired
 	private EmailSender emailSender;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	public String register(RegisterationRequest registerationRequest) {
 		boolean isEmailValid = emailValidator.test(registerationRequest.getEmail());
@@ -138,5 +146,16 @@ public class RegisterationService {
                 "\n" +
                 "</div></div>";
     }
+
+	public String login(LoginRequest loginRequest) {
+		Authentication authentication = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+            loginRequest.getEmail(),
+            loginRequest.getPassword()
+        )
+    );
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    return "User logged in successfully!";
+	}
     
 }

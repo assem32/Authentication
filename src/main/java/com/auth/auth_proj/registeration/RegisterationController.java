@@ -2,6 +2,9 @@ package com.auth.auth_proj.registeration;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.auth.auth_proj.model.LoginRequest;
+
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,13 @@ public class RegisterationController {
     public String getMethodName(@RequestParam String token) {
         return registerationService.confirmToken(token);
     }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        
+        return registerationService.login(loginRequest);
+    }
+    
     
     
     
