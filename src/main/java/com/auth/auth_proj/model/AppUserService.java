@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.auth.auth_proj.registeration.token.ConfirmationToken;
-import com.auth.auth_proj.registeration.token.ConfirmationTokenRepo;
+import com.auth.auth_proj.registeration.token.ConfirmationTokenService;
 
 import lombok.AllArgsConstructor;
 
@@ -22,7 +22,7 @@ public class AppUserService implements UserDetailsService {
     private final StudentRepo studentRepo;
 
     @Autowired
-    private ConfirmationTokenRepo confirmationTokenRepo;
+    private ConfirmationTokenService confirmationTokenService;
 
     private BCryptPasswordEncoder passwordEncoder;
     
@@ -55,11 +55,15 @@ public class AppUserService implements UserDetailsService {
             user
         );
 
-        confirmationTokenRepo.save(confirmationToken);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
 
+        // TODO send emai
 
+        return token;
+    }
 
-        return "it worked";
+    public int enableAppUser(String email) {
+        return studentRepo.enableAppUser(email);
     }
 
 

@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -20,6 +23,12 @@ public class RegisterationController {
     public String register(@RequestBody RegisterationRequest registerationRequest){
         return registerationService.register(registerationRequest);
     }
+
+    @GetMapping("/confirm")
+    public String getMethodName(@RequestParam String token) {
+        return registerationService.confirmToken(token);
+    }
+    
     
     
 }

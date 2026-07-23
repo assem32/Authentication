@@ -1,5 +1,8 @@
 package com.auth.auth_proj.registeration.token;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,14 @@ public class ConfirmationTokenService {
 
     public void saveConfirmationToken(ConfirmationToken confirmationToken){
         confirmationTokenRepo.save(confirmationToken);
+    }
+
+    public Optional<ConfirmationToken> getToken(String token) {
+        return confirmationTokenRepo.findByToken(token);
+    }
+
+    public int setConfirmedAt (String token){
+        return confirmationTokenRepo.updateConfirmaionAt(LocalDateTime.now(), token);
     }
     
 }
